@@ -68,6 +68,7 @@ El sistema utiliza sensores magnéticos para identificar los pallets y topes ele
 Cinta Transportadora:
 	Posee 4 estaciones de trabajo.
 	Cada estación cuenta con 5 sensores mecánicos, 2 topes electromecánicos y un semáforo de señalización (verde: start, rojo: stop).
+<img width="189" height="142" alt="Imagen15" src="https://github.com/user-attachments/assets/b0be33f3-b0c0-406f-a98c-97d5e9565183" />
 
 
 
@@ -77,7 +78,8 @@ Pallets:
 	Los pallets transportan los materiales, cada uno posee 5 imanes.
 	4 imanes indican la identificación o número de pallet con notación binaria.
 	El 5to imán es el “In place”, indica que el Pallet está posicionado en la estación.
- 
+ ![Imagen16](https://github.com/user-attachments/assets/55099c4a-9313-4ae5-b25f-61cd8dfc5202)
+
 
 Arduino Mega:
 	Reemplaza el antiguo PLC.
@@ -85,22 +87,26 @@ Arduino Mega:
 	Acciona los topes electromecánicos para leer el número de Pallet.
 	Acciona las señales luminosas, rojo “stop” y verde “run”.
 	Se comunica con el Manager (PC) a través del protocolo RS-232.
- 
+ <img width="553" height="268" alt="Imagen17" src="https://github.com/user-attachments/assets/f99d512d-5441-4ddb-9024-5e83008a552a" />
+
 
 
 Placa de Optoacopladores:
 	Los optoacopladores adaptan las señales de los sensores magnéticos al nivel de voltaje requerido por el Arduino Mega (de 24V a 5V) y protegen al sistema contra picos y fluctuaciones eléctricas.
- 
+ ![Imagen18](https://github.com/user-attachments/assets/2296ff7c-899a-40b4-bd98-6bfe64f51fbe)
+
 
 Sensores Magnéticos:
 	Detectan los imanes que poseen pallets y envían la señal amplificada a la placa de optoacopladores, a su vez esta última se comunica con el Arduino mega.
- 
+ ![Imagen19](https://github.com/user-attachments/assets/73156121-e3c1-43f0-bbfe-7b99947faf82)
+
 
 Topes Electromecánicos:
 	Cada estación posee 2 topes que actúan en simultaneo, el primero detiene el Pallet a leer y el segundo asegura un gap con el Pallet siguiente para evitar colisiones entre estos.
 	Se activan cuando el primer imán del Pallet pasa por el primer sensor magnético (ID3 “Irriving”) de una estación.
 	Detienen el pallet para leer su identificación.
- 
+ ![Imagen20](https://github.com/user-attachments/assets/603f1d7b-4bb1-4206-92d5-c67b4663780e)
+
 
 
 
@@ -111,72 +117,60 @@ Comunicación con la PC:
 
 Relés:
 	Energizan y des energizan los topes electromecánicos para detener los Pallets en cada estación.}
- 
+ <img width="497" height="371" alt="Imagen21" src="https://github.com/user-attachments/assets/bdf2c28a-a469-46d0-a503-537c25878312" />
 
-ingeniería Inversa 
-Identificación de terminales del PLC
+
+## ingeniería Inversa 
+## Identificación de terminales del PLC
 Antes de avanzar con el diseño del circuito electrónico se realizó un relevamiento de las conexiones eléctricas del PLC a fin de identificar los sensores magnéticos y demás componentes de entrada y salida del sistema.
 Dicho PLC posee 3 módulos de conexiones donde cada módulo tiene 16 puntos de conexión.
 	Modulo 1 – “OCH” (En general salidas de los sensores magnéticos)
 	Modulo 2 – “ID212” (“INPLACE”)
 	Modulo 3 – “OC222” (“Salidas Topes Electromecánicos y semáforos)
- 
-
-
-Identificación de los pines de las 4 estaciones
- 
+ ![Imagen22](https://github.com/user-attachments/assets/12c294c4-930e-4793-9953-f224dbb19fa9)
 
 
 
-Esquema eléctrico en Proteus
+## Identificación de los pines de las 4 estaciones
+ <img width="425" height="151" alt="Imagen23" src="https://github.com/user-attachments/assets/27d5edc2-90b1-432d-9b46-ec21e369cddd" />
 
-Diagrama eléctrico general
+
+
+
+## Esquema eléctrico en Proteus
+<img width="1227" height="529" alt="Imagen24" src="https://github.com/user-attachments/assets/188d666a-a193-488a-8ad3-958bc8319ba1" />
+
+## Diagrama eléctrico general
 	Subcircuito: Placa interface PLC
 	Subcircuitos: Optoacopladores x 4
 	Arduino Mega
 	Subcircuito: Relés
 
- 
+
+
+## Subcircuito: Placa interfaz PLC
+
+ <img width="1120" height="1003" alt="Imagen25" src="https://github.com/user-attachments/assets/ecf12756-44f9-4b7e-9649-2d50ca1b794b" />
+
+
+
+## Subcircuito: Optoacopladores x 4
+
+ <img width="673" height="1573" alt="Imagen26" src="https://github.com/user-attachments/assets/6a51c7a3-40cb-4dbe-8081-2bd105293a10" />
+
+
+
+## Arduino Mega
+
+ <img width="1216" height="936" alt="Imagen27" src="https://github.com/user-attachments/assets/cbdf1a75-17d1-4fe2-af59-fb18c3797e39" />
 
 
 
 
+## Subcircuito: Relés x 8
+ <img width="603" height="1731" alt="Imagen28" src="https://github.com/user-attachments/assets/03907012-ab65-4ccc-8dc4-15afe0baff04" />
 
-
-
-
-
-
-
-Subcircuito: Placa interfaz PLC
-
- 
-
-
-
-
-
-
-
-
-Subcircuito: Optoacopladores x 4
-
- 
-
-
-Arduino Mega
-
- 
-
-
-
-
-
-
-
-Subcircuito: Relés x 8
- 
-Programación
+# Programación
 El código del Arduino debe:
 	Leer señales de los sensores magnéticos.
 	Cuando el primer imán de un pallet es detectado por el sensor ID3 (arriving) se debe accionar el tope electromecánico de la estación correcta.
@@ -186,7 +180,7 @@ El código del Arduino debe:
 	Tope hacia arriba = semáforo en rojo, tope desactivado = semáforo en verde.
 	Se utilizarán interrupciones para detener el pallet y luego leer el nro. de identificación.
 
-Primer código. Permite leer la identificación de los Pallets que pasan por cualquiera de las 4 estaciones de la cinta transportadora. Imprime el número de estación e identificación del Pallet.
+## Primer código. Permite leer la identificación de los Pallets que pasan por cualquiera de las 4 estaciones de la cinta transportadora. Imprime el número de estación e identificación del Pallet.
 #include <LiquidCrystal.h>
 
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
@@ -288,7 +282,7 @@ if(digitalRead(A12)==1)
        lcd.print(l);  
 }
 
-Código Arduino mejorado para las 4 Estaciónes:
+## Código Arduino mejorado para las 4 Estaciónes:
 
 #include <avr/interrupt.h>
 #include <Arduino.h>
@@ -576,7 +570,7 @@ void imprimirID(int estacionIndex, uint8_t id) {
 
 
 
-Conclusiones
+# Conclusiones
 	La implementación del Arduino Mega como reemplazo del PLC en el sistema de control de la cinta transportadora demostró ser una solución eficiente y versátil. A través del diseño de esquemas eléctricos, la incorporación de componentes óptimos como optoacopladores y sensores magnéticos, y el desarrollo de un código funcional para la comunicación y control, se logró cumplir con los objetivos del proyecto: modernizar el sistema y optimizar su funcionamiento.
 	Este enfoque no solo permitió la automatización precisa de las cuatro estaciones de trabajo, sino que también facilitó una interacción efectiva entre el Arduino y la PC mediante comunicación USB - RS232. Las pruebas realizadas garantizaron la fiabilidad del sistema, ajustando tiempos y lógica para evitar colisiones entre pallets y mejorar la productividad.
 
@@ -591,8 +585,8 @@ Conclusiones
 
 
 
-ANEXO 1
-Placa Optoacopladores – diseño y calculo
+# ANEXO 1
+## Placa Optoacopladores – diseño y calculo
 La corriente típica del LED del PC817A es de 10 mA, pero puede funcionar correctamente con corrientes más bajas, como 5 mA. de esta forma optimizamos el consumo y temperaturas elevadas en la resistencia de entrada.
 
 Datos conocidos:
@@ -629,6 +623,7 @@ Colocamos un diodo en polaridad inversa en la entrada para proteger el optoacopl
 Colocamos un LED con una resistencia en la salida del optoacoplador para visualizar el estado de la señal de 5V.
 Esquema del Circuito:
  
+<img width="1030" height="670" alt="Imagen29" src="https://github.com/user-attachments/assets/fabfe3ff-78b2-44f4-bc44-59535f2be3f7" />
 
 
 Lista de Componentes:
