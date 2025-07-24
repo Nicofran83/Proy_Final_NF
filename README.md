@@ -209,7 +209,7 @@ void loop()
   int k = digitalRead(A4);  // estacion c
   int l = digitalRead(A12);  // estacion d
   
-    if(digitalRead(26)==1)
+if(digitalRead(26)==1)
      { 
       i=PINC;
       i=PINC&0b00001111;
@@ -230,7 +230,7 @@ if(digitalRead(33)==1)
       Serial.println("Estacion 2 ON");  
       Serial.print("carro nro "); Serial.println(j,HEX);  
 
-     }
+  }
      else{
       digitalWrite(9,LOW);
       Serial.println("Estacion 2 OFF");
@@ -423,21 +423,21 @@ void gestionarEstacion(int i) {
   else {
     if (leerSensorInplace(i)) {  // Si el sensor de posición está activado...
 
-      // --- PROCESO COMPLETADO PARA ESTA ESTACIÓN ---
+// --- PROCESO COMPLETADO PARA ESTA ESTACIÓN ---
       uint8_t id = leerID(i);
       imprimirID(i, id);
       
-      delay(TIEMPO_LECTURA_MS);
+delay(TIEMPO_LECTURA_MS);
 
-      controlarActuador(i, false);  // Desactiva el actuador
+controlarActuador(i, false);  // Desactiva el actuador
 
-      // --- REINICIO DE ESTADO PARA LA PRÓXIMA LECTURA ---
+// --- REINICIO DE ESTADO PARA LA PRÓXIMA LECTURA ---
       estados[i].palletDetectado = false;
       estados[i].tiempoDeFrenadoCumplido = false;
       estados[i].contadorOverflows = 0;
 
-      EIFR |= (1 << (INTF0 + i));
-      EIMSK |= (1 << (INT0 + i));
+EIFR |= (1 << (INTF0 + i));
+EIMSK |= (1 << (INT0 + i));
     }
   }
 }
