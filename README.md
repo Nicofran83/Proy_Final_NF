@@ -5,9 +5,13 @@
 
 
 Alumno: Jorge Nicolas Franco
+
 DNI: 30353371
+
 Nombre de la Institución: Laboratorio CIM. UNLZ-FI
+
 Tutor institucional y académico: Martin González
+
 Año: 2025
 
 
